@@ -10,11 +10,11 @@ def setup_database():
 
 def test_meal_init():
     """Tests the initialization of a Meal instance."""
-    meal = Meal(id=1, meal="Pasta", cuisine="Italian", price=12.99, difficulty="MED")
+    meal = Meal(id=1, meal="Kimchi", cuisine="Korean", price=25.99, difficulty="MED")
     assert meal.id == 1
-    assert meal.meal == "Pasta"
-    assert meal.cuisine == "Italian"
-    assert meal.price == 12.99
+    assert meal.meal == "Kimchi"
+    assert meal.cuisine == "Korean"
+    assert meal.price == 25.99
     assert meal.difficulty == "MED"
 
     with pytest.raises(ValueError):
@@ -24,33 +24,33 @@ def test_meal_init():
 
 def test_create_meal(setup_database):
     """Tests creating a meal in the database."""
-    create_meal("Pasta", "Italian", 10.0, "MED")
-    meal = get_meal_by_name("Pasta")
-    assert meal.meal == "Pasta"
-    assert meal.cuisine == "Italian"
+    create_meal("Kimchi", "Korean", 10.0, "MED")
+    meal = get_meal_by_name("Kimchi")
+    assert meal.meal == "Kimchi"
+    assert meal.cuisine == "Korean"
     assert meal.price == 10.0
     assert meal.difficulty == "MED"
 
     # Test for duplicate meal name
     with pytest.raises(ValueError, match="already exists"):
-        create_meal("Pasta", "Italian", 10.0, "MED")
+        create_meal("Kimchi", "Korean", 10.0, "MED")
 
     # Test for invalid price and difficulty
-    with pytest.raises(ValueError, match="positive number"):
-        create_meal("Burger", "American", -5, "LOW")
-    with pytest.raises(ValueError, match="LOW, MED, or HIGH"):
-        create_meal("Burger", "American", 10, "INVALID")
+    with pytest.raises(ValueError, match="please enter a Positive number"):
+        create_meal("Hot Dog", "American", -5, "LOW")
+    with pytest.raises(ValueError, match="Choose one of the following: LOW, MED, or HIGH"):
+        create_meal("Hot Dog", "American", 10, "meow")
 
 def test_clear_meals(setup_database):
     """Tests clearing all meals from the database."""
-    create_meal("Taco", "Mexican", 8.0, "LOW")
+    create_meal("Sushi", "Japanese", 20.0, "HIGH")
     clear_meals()
     with pytest.raises(ValueError, match="not found"):
-        get_meal_by_name("Taco")
+        get_meal_by_name("Sushi")
 
 def test_delete_meal(setup_database):
     """Tests marking a meal as deleted."""
-    create_meal("Pizza", "Italian", 12.0, "HIGH")
+    create_meal("Pizza", "Korean", 12.0, "HIGH")
     meal = get_meal_by_name("Pizza")
     delete_meal(meal.id)
     
@@ -72,17 +72,17 @@ def test_get_leaderboard(setup_database):
 
 def test_get_meal_by_id(setup_database):
     """Tests retrieving a meal by its ID."""
-    create_meal("Burger", "American", 9.99, "LOW")
-    meal = get_meal_by_name("Burger")
+    create_meal("Hot Dog", "American",25.99, "LOW")
+    meal = get_meal_by_name("Hot Dog")
     retrieved_meal = get_meal_by_id(meal.id)
-    assert retrieved_meal.meal == "Burger"
+    assert retrieved_meal.meal == "Hot Dog"
 
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_id(999)
 
 def test_get_meal_by_name(setup_database):
     """Tests retrieving a meal by its name."""
-    create_meal("Sandwich", "American", 5.99, "LOW")
+    create_meal("Sandwich", "American",25.99, "LOW")
     meal = get_meal_by_name("Sandwich")
     assert meal.meal == "Sandwich"
 
