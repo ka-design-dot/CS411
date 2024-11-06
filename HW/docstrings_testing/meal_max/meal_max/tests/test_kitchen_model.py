@@ -10,48 +10,48 @@ def setup_database():
 
 def test_meal_init():
     """Tests the initialization of a Meal instance."""
-    meal = Meal(id=1, meal="Kimchi", cuisine="Korean", price=25.99, difficulty="MED")
+    meal = Meal(id=1, meal="Truffle Risotto", cuisine="Italian-Fusion", price=22.08, difficulty="MED")
     assert meal.id == 1
-    assert meal.meal == "Kimchi"
-    assert meal.cuisine == "Korean"
-    assert meal.price == 25.99
+    assert meal.meal == "Truffle Risotto"
+    assert meal.cuisine == "Italian-Fusion"
+    assert meal.price == 22.08
     assert meal.difficulty == "MED"
 
     with pytest.raises(ValueError):
-        Meal(id=2, meal="Salad", cuisine="American", price=-5, difficulty="LOW")
+        Meal(id=2, meal="Wagyu Burger", cuisine="Japanese-American", price=-8.5, difficulty="LOW")
     with pytest.raises(ValueError):
-        Meal(id=3, meal="Soup", cuisine="French", price=8, difficulty="INVALID")
+        Meal(id=3, meal="Lobster Bisque", cuisine="French", price=20.4, difficulty="INVALID")
 
 def test_create_meal(setup_database):
     """Tests creating a meal in the database."""
-    create_meal("Kimchi", "Korean", 10.0, "MED")
-    meal = get_meal_by_name("Kimchi")
-    assert meal.meal == "Kimchi"
-    assert meal.cuisine == "Korean"
-    assert meal.price == 10.0
+    create_meal("Bangers and Mash", "British", 17.0, "MED")
+    meal = get_meal_by_name("Bangers and Mash")
+    assert meal.meal == "Bangers and Mash"
+    assert meal.cuisine == "British"
+    assert meal.price == 17.0
     assert meal.difficulty == "MED"
 
     # Test for duplicate meal name
     with pytest.raises(ValueError, match="already exists"):
-        create_meal("Kimchi", "Korean", 10.0, "MED")
+        create_meal("Bangers and Mash", "British", 17.0, "MED")
 
     # Test for invalid price and difficulty
-    with pytest.raises(ValueError, match="please enter a Positive number"):
-        create_meal("Hot Dog", "American", -5, "LOW")
-    with pytest.raises(ValueError, match="Choose one of the following: LOW, MED, or HIGH"):
-        create_meal("Hot Dog", "American", 10, "meow")
+    with pytest.raises(ValueError, match="positive number"):
+        create_meal("Kobe Beef Ramen", "Japanese", -12.0, "LOW")
+    with pytest.raises(ValueError, match="LOW, MED, or HIGH"):
+        create_meal("Kobe Beef Ramen", "Japanese", 19.0, "INVALID")
 
 def test_clear_meals(setup_database):
     """Tests clearing all meals from the database."""
-    create_meal("Sushi", "Japanese", 20.0, "HIGH")
+    create_meal("Chicken Masala", "Indian", 13.6, "LOW")
     clear_meals()
     with pytest.raises(ValueError, match="not found"):
-        get_meal_by_name("Sushi")
+        get_meal_by_name("Chicken Masala")
 
 def test_delete_meal(setup_database):
     """Tests marking a meal as deleted."""
-    create_meal("Pizza", "Korean", 12.0, "HIGH")
-    meal = get_meal_by_name("Pizza")
+    create_meal("Soondaegook", "South Korean", 20.4, "HIGH")
+    meal = get_meal_by_name("Soondaegook")
     delete_meal(meal.id)
     
     with pytest.raises(ValueError, match="has been deleted"):
@@ -59,11 +59,11 @@ def test_delete_meal(setup_database):
 
 def test_get_leaderboard(setup_database):
     """Tests retrieving the leaderboard sorted by wins or win percentage."""
-    create_meal("Sushi", "Japanese", 15.0, "MED")
+    create_meal("Sushi Omakase", "Japanese", 25.5, "MED")
     update_meal_stats(1, "win")
     leaderboard = get_leaderboard("wins")
     
-    assert leaderboard[0]["meal"] == "Sushi"
+    assert leaderboard[0]["meal"] == "Sushi Omakase"
     assert leaderboard[0]["wins"] == 1
     assert leaderboard[0]["win_pct"] == 100.0
 
@@ -72,27 +72,27 @@ def test_get_leaderboard(setup_database):
 
 def test_get_meal_by_id(setup_database):
     """Tests retrieving a meal by its ID."""
-    create_meal("Hot Dog", "American",25.99, "LOW")
-    meal = get_meal_by_name("Hot Dog")
+    create_meal("Peking Duck", "Chinese", 33.98, "HIGH")
+    meal = get_meal_by_name("Peking Duck")
     retrieved_meal = get_meal_by_id(meal.id)
-    assert retrieved_meal.meal == "Hot Dog"
+    assert retrieved_meal.meal == "Peking Duck"
 
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_id(999)
 
 def test_get_meal_by_name(setup_database):
     """Tests retrieving a meal by its name."""
-    create_meal("Sandwich", "American",25.99, "LOW")
-    meal = get_meal_by_name("Sandwich")
-    assert meal.meal == "Sandwich"
+    create_meal("Beef Wellington", "British", 40.8, "HIGH")
+    meal = get_meal_by_name("Beef Wellington")
+    assert meal.meal == "Beef Wellington"
 
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_name("NonExistent")
 
 def test_update_meal_stats(setup_database):
     """Tests updating meal stats based on battle outcomes."""
-    create_meal("Ramen", "Japanese", 12.5, "MED")
-    meal = get_meal_by_name("Ramen")
+    create_meal("Pho", "Vietnamese", 10.2, "LOW")
+    meal = get_meal_by_name("Pho")
     
     # Update with a win
     update_meal_stats(meal.id, "win")
