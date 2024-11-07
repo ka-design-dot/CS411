@@ -243,7 +243,7 @@ def update_meal_stats(meal_id: int, result: str) -> None:
     """Updates the stats of a meal based on the battle result.
 
     Args:
-        meal_id: The unique identifier of the meal to update.
+        meal_id: ID of the meal to update.
         result: The outcome of the battle which could be a 'win' or a 'loss'.
 
     Raises:
