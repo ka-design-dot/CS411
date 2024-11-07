@@ -1,6 +1,9 @@
 import pytest
 from meal_max.models.kitchen_model import Meal, create_meal, clear_meals, delete_meal, get_leaderboard, get_meal_by_id, get_meal_by_name, update_meal_stats
 
+
+
+
 @pytest.fixture
 def setup_database():
     """Fixture to set up and tear down a test database."""
@@ -8,8 +11,11 @@ def setup_database():
     yield
     clear_meals()  # Clear data after each test
 
+
+
 def test_meal_init():
     """Tests the initialization of a Meal instance."""
+
     meal = Meal(id=1, meal="Truffle Risotto", cuisine="Italian-Fusion", price=22.08, difficulty="MED")
     assert meal.id == 1
     assert meal.meal == "Truffle Risotto"
@@ -22,8 +28,11 @@ def test_meal_init():
     with pytest.raises(ValueError):
         Meal(id=3, meal="Lobster Bisque", cuisine="French", price=20.4, difficulty="INVALID")
 
+
+
 def test_create_meal(setup_database):
     """Tests creating a meal in the database."""
+
     create_meal("Bangers and Mash", "British", 17.0, "MED")
     meal = get_meal_by_name("Bangers and Mash")
     assert meal.meal == "Bangers and Mash"
@@ -41,15 +50,21 @@ def test_create_meal(setup_database):
     with pytest.raises(ValueError, match="LOW, MED, or HIGH"):
         create_meal("Kobe Beef Ramen", "Japanese", 19.0, "INVALID")
 
+
+
 def test_clear_meals(setup_database):
     """Tests clearing all meals from the database."""
+
     create_meal("Chicken Masala", "Indian", 13.6, "LOW")
     clear_meals()
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_name("Chicken Masala")
 
+
+
 def test_delete_meal(setup_database):
     """Tests marking a meal as deleted."""
+
     create_meal("Soondaegook", "South Korean", 20.4, "HIGH")
     meal = get_meal_by_name("Soondaegook")
     delete_meal(meal.id)
@@ -57,8 +72,11 @@ def test_delete_meal(setup_database):
     with pytest.raises(ValueError, match="has been deleted"):
         get_meal_by_id(meal.id)
 
+
+
 def test_get_leaderboard(setup_database):
     """Tests retrieving the leaderboard sorted by wins or win percentage."""
+
     create_meal("Sushi Omakase", "Japanese", 25.5, "MED")
     update_meal_stats(1, "win")
     leaderboard = get_leaderboard("wins")
@@ -70,8 +88,11 @@ def test_get_leaderboard(setup_database):
     with pytest.raises(ValueError, match="Invalid sort_by parameter"):
         get_leaderboard("invalid")
 
+
+
 def test_get_meal_by_id(setup_database):
     """Tests retrieving a meal by its ID."""
+
     create_meal("Peking Duck", "Chinese", 33.98, "HIGH")
     meal = get_meal_by_name("Peking Duck")
     retrieved_meal = get_meal_by_id(meal.id)
@@ -80,8 +101,11 @@ def test_get_meal_by_id(setup_database):
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_id(999)
 
+
+
 def test_get_meal_by_name(setup_database):
     """Tests retrieving a meal by its name."""
+
     create_meal("Beef Wellington", "British", 40.8, "HIGH")
     meal = get_meal_by_name("Beef Wellington")
     assert meal.meal == "Beef Wellington"
@@ -89,8 +113,11 @@ def test_get_meal_by_name(setup_database):
     with pytest.raises(ValueError, match="not found"):
         get_meal_by_name("NonExistent")
 
+
+
 def test_update_meal_stats(setup_database):
     """Tests updating meal stats based on battle outcomes."""
+
     create_meal("Pho", "Vietnamese", 10.2, "LOW")
     meal = get_meal_by_name("Pho")
     

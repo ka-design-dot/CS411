@@ -21,7 +21,7 @@ class Meal:
     difficulty: str
 
     def __post_init__(self):
-        """Performs post-initialization checks to validate the Meal instance."""
+        """Performs post-initialization checks to validate the meal."""
         if self.price < 0:
             raise ValueError("Price must be a positive value.")
         if self.difficulty not in ['LOW', 'MED', 'HIGH']:
@@ -33,8 +33,8 @@ def create_meal(meal: str, cuisine: str, price: float, difficulty: str) -> None:
 
     Args:
         meal: The name of the meal.
-        cuisine: The type of cuisine of the meal.
-        price: The price of the meal, which must be a positive number.
+        cuisine: The type of cuisine.
+        price: The price, which must be a positive number.
         difficulty: The difficulty level of preparing the meal, which must be 'LOW', 'MED', or 'HIGH'.
 
     Raises:
@@ -68,7 +68,7 @@ def create_meal(meal: str, cuisine: str, price: float, difficulty: str) -> None:
 def clear_meals() -> None:
     """Clears all entries in the meals table by recreating it.
 
-    Inputs:
+    Args:
         None.
 
     Raises:
@@ -92,7 +92,7 @@ def delete_meal(meal_id: int) -> None:
     """Marks a meal as deleted in the database.
 
     Args:
-        meal_id: The unique identifier of the meal to delete.
+        meal_id: The meal id to delete.
 
     Raises:
         ValueError: If the meal has already been deleted or does not exist.
@@ -121,10 +121,10 @@ def delete_meal(meal_id: int) -> None:
         raise e
 
 def get_leaderboard(sort_by: str = "wins") -> dict[str, Any]:
-    """Retrieves the leaderboard of meals based on battles and wins.
+    """Gets the leaderboard of meals based on battles and wins.
 
     Args:
-        sort_by: The attribute to sort by, either 'wins' or 'win_pct'.
+        sort_by: sort by wins.
 
     Returns:
         A dictionary containing meal information such as id, meal name, cuisine, price, difficulty, battles, wins, and win percentage.
@@ -174,13 +174,13 @@ def get_leaderboard(sort_by: str = "wins") -> dict[str, Any]:
         raise e
 
 def get_meal_by_id(meal_id: int) -> Meal:
-    """Retrieves a meal by its ID.
+    """Gets a meal by its ID.
 
     Args:
-        meal_id: The unique identifier of the meal.
+        meal_id: ID of the meal.
 
     Returns:
-        A Meal instance representing the meal with the specified ID.
+        A Meal instance that represents the meal with the input ID.
 
     Raises:
         ValueError: If the meal does not exist or has been marked as deleted.
@@ -240,14 +240,14 @@ def get_meal_by_name(meal_name: str) -> Meal:
 
 
 def update_meal_stats(meal_id: int, result: str) -> None:
-    """Updates the statistics of a meal based on the battle result.
+    """Updates the stats of a meal based on the battle result.
 
     Args:
         meal_id: The unique identifier of the meal to update.
-        result: The outcome of the battle, either 'win' or 'loss'.
+        result: The outcome of the battle which could be a 'win' or a 'loss'.
 
     Raises:
-        ValueError: If the meal has been marked as deleted, does not exist, or the result is invalid.
+        ValueError: If the meal has been marked as deleted, does not exist, or result is invalid.
         sqlite3.Error: If a database error occurs.
     """
     try:
