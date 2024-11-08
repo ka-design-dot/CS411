@@ -1,0 +1,1 @@
+"""The smoketest file for meal_max"""
