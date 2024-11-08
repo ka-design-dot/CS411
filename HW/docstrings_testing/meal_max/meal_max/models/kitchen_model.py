@@ -12,8 +12,13 @@ configure_logger(logger)
 
 @dataclass
 class Meal:
-    """Represents a meal with various attributes."""
+    """Represents a meal with various attributes.
     
+        Attributes:
+            price (float): price of the meal
+            difficulty (str): the difficulty of the meal's creation
+    
+    """
     id: int
     meal: str
     cuisine: str
@@ -21,7 +26,10 @@ class Meal:
     difficulty: str
 
     def __post_init__(self):
-        """Performs post-initialization checks to validate the meal."""
+        """Performs post-initialization checks to validate the meal.
+        Raises:
+            ValueError: if the difficulty isn't 'LOW', 'MED', 'HIGH'        
+        """
         if self.price < 0:
             raise ValueError("Price must be a positive value.")
         if self.difficulty not in ['LOW', 'MED', 'HIGH']:

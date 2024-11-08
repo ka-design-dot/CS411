@@ -15,6 +15,9 @@ class BattleModel:
     """
         Model representing a battle between 2 meals who are given scores based on silly rules
         with the winner based on the scores from random.org.
+
+        Attributes: combatants: List[Meal] which are the meals entering combat
+        
     """
 
     def __init__(self):

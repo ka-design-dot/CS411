@@ -24,10 +24,6 @@ def get_random() -> float:
         INFO: Logs the URL request to random.org and the received random number.
         ERROR: Logs if the request to random.org fails or if the response is invalid.
 
-    Examples:
-        >>> random_number = get_random()
-        >>> print(random_number)
-        0.57
     """
     url = "https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new"
 
