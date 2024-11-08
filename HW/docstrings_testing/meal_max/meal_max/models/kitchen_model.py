@@ -83,7 +83,7 @@ def clear_meals() -> None:
         sqlite3.Error: If a database error occurs while clearing the meals table.
     """
     try:
-        with open(os.getenv("SQL_CREATE_TABLE_PATH", "/app/sql/create_meal_table.sql"), "r") as fh:
+        with open(os.getenv("SQL_CREATE_TABLE_PATH", "sql/create_meal_table.sql"), "r") as fh:
             create_table_script = fh.read()
         with get_db_connection() as conn:
             cursor = conn.cursor()
