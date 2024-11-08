@@ -23,3 +23,4 @@ else
   source "$VENV_DIR/bin/activate"
   echo "Virtual environment already exists. Activated."
 fi
+

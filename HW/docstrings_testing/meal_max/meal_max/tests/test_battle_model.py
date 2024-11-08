@@ -1,5 +1,9 @@
 import pytest
 from unittest.mock import patch
+from meal_max.models.kitchen_model import Meal, update_meal_stats
+from meal_max.utils.logger import configure_logger
+from meal_max.utils.random_utils import get_random
+from meal_max.models.battle_model import BattleModel
 
 """Unit tests for battle_model that will """
 
@@ -63,7 +67,9 @@ def test_get_battle_score (sample_meal_one):
     expected_score = (sample_meal_one.price * len(sample_meal_one.cuisine)) - 2 #2 is the amount for MED as HIGH is 1 and LOW is 3
     assert score == expected_score #makes sure that the score given by the program matches the formulaic result
 
+
 """ TEST #7: Battling with 2 combatants: should produce a winner and loser should be removed """
+@patch("meal_max.utils.random_utils.get_random", return_value=0.5) 
 def test_battle_outcome (sample_meal_one, sample_meal_two):
     battle_model = BattleModel()
     battle_model.prep_combatant(sample_meal_one) #adding the Cheeseburger
