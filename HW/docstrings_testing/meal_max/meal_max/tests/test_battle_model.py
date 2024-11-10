@@ -5,7 +5,7 @@ from meal_max.utils.logger import configure_logger
 from meal_max.utils.random_utils import get_random
 from meal_max.models.battle_model import BattleModel
 
-"""Unit tests for battle_model that will """
+"""Unit tests for battle_model that will see how well the code works. """
 
 """Importing the class from battle_model and getting Meal"""
 from meal_max.models.battle_model import BattleModel
