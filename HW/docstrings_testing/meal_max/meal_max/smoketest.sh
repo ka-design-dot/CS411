@@ -199,7 +199,7 @@ battle() {
   echo "Two meals enter, one meal leaves!"
   response=$(curl -s -X POST "$BASE_URL/battle") 
 
-  if echo "$response" | grep -q '"status": "success"'; then
+  if echo "$response" | grep -q '"status": "battle complete"'; then
     echo "Battle initiated successfully."
     if [ "$ECHO_JSON" = true ]; then
       echo "Battle JSON:"
@@ -215,7 +215,7 @@ clear_combatants() {
   echo "Clearing all combatants..."
   response=$(curl -s -X POST "$BASE_URL/clear-combatants")
 
-  if echo "$response" | grep -q '"status": "success"'; then
+  if echo "$response" | grep -q '"status": "combatants cleared"'; then
     echo "Combatants cleared."
   else
     echo "Failed to clear combatants."
@@ -244,7 +244,7 @@ prep_combatants() {
   echo "Preparing combatants..."
   response=$(curl -s -X POST "$BASE_URL/prep-combatant")
 
-  if echo "$response" | grep -q '"status": "success"'; then
+  if echo "$response" | grep -q '"status": "combatant prepared"'; then
     echo "Combatants prepped successfully."
     if [ "$ECHO_JSON" = true ]; then
       echo "Combatants JSON:"
@@ -266,7 +266,7 @@ prep_combatants() {
 
 # Function to get the song leaderboard sorted by play count
 get_leaderboard() {
-  echo "Getting meal leaderboard sorted by wins, battles, or win percentages"
+  echo "Getting meal leaderboard sorted by wins"
   response=$(curl -s -X GET "$BASE_URL/leaderboard?sort=win")
   if echo "$response" | grep -q '"status": "success"'; then
     echo "Leaderboard retrieved successfully."
