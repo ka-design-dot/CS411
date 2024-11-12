@@ -48,8 +48,8 @@ def mock_cursor(mocker):
 
 def test_create_meal(mock_cursor):
     """Test creating a new meal in the database."""
-    create_meal("Pasta", "Italian", 12.5, "MED")
-    expected_args = ("Pasta", "Italian", 12.5, "MED")
+    create_meal("Pasta", "Italian", 22.5, "MED")
+    expected_args = ("Pasta", "Italian", 22.5, "MED")
     actual_args = mock_cursor.execute.call_args[0][1]
     assert actual_args == expected_args
 
@@ -57,7 +57,7 @@ def test_create_meal_duplicate(mock_cursor):
     """Test creating a meal with a duplicate name, which should raise an error."""
     mock_cursor.execute.side_effect = sqlite3.IntegrityError("UNIQUE constraint failed: meals.meal")
     with pytest.raises(ValueError, match="Meal with name 'Pasta' already exists"):
-        create_meal("Pasta", "Italian", 12.5, "MED")
+        create_meal("Pasta", "Italian", 22.5, "MED")
 
 def test_create_meal_invalid_price():
     """Test creating a meal with an invalid (negative) price, which should raise a ValueError."""
@@ -67,7 +67,7 @@ def test_create_meal_invalid_price():
 def test_create_meal_invalid_difficulty():
     """Test creating a meal with an invalid difficulty level, which should raise a ValueError."""
     with pytest.raises(ValueError, match="Invalid difficulty level: EASY. Must be 'LOW', 'MED', or 'HIGH'."):
-        create_meal("Pasta", "Italian", 10.0, "EASY")
+        create_meal("Pasta", "Italian", 22.5, "EASY")
 
 def test_delete_meal(mock_cursor):
     """Test soft-deleting a meal in the database by setting its deleted status to TRUE."""
@@ -88,21 +88,21 @@ def test_delete_meal(mock_cursor):
 
 def test_get_meal_by_id(mock_cursor):
     """Test retrieving a meal by its ID from the database."""
-    mock_cursor.fetchone.return_value = (1, "Pasta", "Italian", 10.0, "MED", False)
+    mock_cursor.fetchone.return_value = (1, "Pasta", "Italian", 22.0, "MED", False)
     meal = get_meal_by_id(1)
     assert meal.meal == "Pasta"
-    assert meal.price == 10.0
+    assert meal.price == 22.0
 
 def test_get_meal_by_name(mock_cursor):
     """Test retrieving a meal by its name from the database."""
-    mock_cursor.fetchone.return_value = (1, "Pasta", "Italian", 10.0, "MED", False)
+    mock_cursor.fetchone.return_value = (1, "Pasta", "Italian", 22.0, "MED", False)
     meal = get_meal_by_name("Pasta")
     assert meal.cuisine == "Italian"
 
 def test_get_leaderboard(mock_cursor):
     """Test retrieving a leaderboard of meals ordered by wins."""
     mock_cursor.fetchall.return_value = [
-        (1, "Pasta", "Italian", 10.0, "MED", 10, 8, 80.0),
+        (1, "Pasta", "Italian", 22.0, "MED", 22, 8, 80.0),
         (2, "Burger", "American", 12.5, "LOW", 20, 15, 75.0)
     ]
     leaderboard = get_leaderboard(sort_by="wins")
