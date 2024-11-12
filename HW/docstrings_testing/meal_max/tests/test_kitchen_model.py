@@ -122,3 +122,11 @@ def test_update_meal_stats_win(mock_cursor):
     expected_update_sql = "UPDATE meals SET battles = battles + 1, wins = wins + 1 WHERE id = ?"
     actual_update_sql = mock_cursor.execute.call_args_list[1][0][0]
     assert actual_update_sql == expected_update_sql
+
+def test_update_meal_stats_false(mock_cursor):
+    """Test updating the stats of a meal by incrementing its loss and battles after a loss."""
+    mock_cursor.fetchone.return_value = [False]
+    update_meal_stats(1, "loss")
+    expected_update_sql = "UPDATE meals SET battles = battles + 1, loss = loss + 1 WHERE id = ?"
+    actual_update_sql = mock_cursor.execute.call_args_list[1][0][0]
+    assert actual_update_sql == expected_update_sql
